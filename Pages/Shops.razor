@@ -1,0 +1,61 @@
+﻿@page "/"
+@page "/shops"
+@inject BlazorProjectDemo.Data.IShopService ShopService;
+
+<h3>All Shops</h3>
+<br />
+<a href="shop/0">
+    Add Shop
+</a>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>ShopName</td>
+            <td>Address</td>
+            <td>ZipCode</td>
+            <td>Location</td>
+            <td>CountryName</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shop in shops)
+        {
+            <tr>
+                <td>@shop.Id</td>
+                <td>@shop.ShopName</td>
+                <td>@shop.Address</td>
+                <td>@shop.ZipCode</td>
+                <td>@shop.Location</td>
+                <td>@shop.CountryName</td>
+                <td>
+                    <a href="shop/@shop.Id">
+                        Edit
+                    </a>
+                </td>
+                <td>
+                    <button class="btn btn-primary" @onclick="@(e=>OnDelete(shop.Id))">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code {
+
+    private List<BlazorProjectDemo.Data.Shop> shops;
+
+    protected override void OnInitialized()
+    {
+        shops = ShopService.GetShops();
+    }
+    private void OnDelete(Guid Id)
+    {
+        ShopService.DeleteShop(Id);
+    }
+}
